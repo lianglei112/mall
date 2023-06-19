@@ -162,6 +162,13 @@ public class UmsAdminController {
         return CommonResult.success(umsRoleList);
     }
 
+    /**
+     * 给用户分配角色
+     *
+     * @param adminId
+     * @param roleIds
+     * @return
+     */
     @ResponseBody
     @ApiOperation("给用户分配角色")
     @RequestMapping(value = "/role/update", method = RequestMethod.POST)

@@ -1,5 +1,6 @@
 package com.macro.mall.dao;
 
+import com.macro.mall.model.UmsAdminRoleRelation;
 import com.macro.mall.model.UmsRole;
 import org.apache.ibatis.annotations.Param;
 
@@ -14,6 +15,19 @@ import java.util.List;
  */
 public interface UmsAdminRoleRelationDao {
 
-
+    /**
+     * 用于获取所有用户角色
+     *
+     * @param adminId
+     * @return
+     */
     List<UmsRole> getRoleList(@Param("adminId") Long adminId);
+
+    /**
+     * 批量插入用户角色关系
+     *
+     * @param umsAdminRoleRelations
+     * @return
+     */
+    int insertList(@Param("list") List<UmsAdminRoleRelation> umsAdminRoleRelations);
 }

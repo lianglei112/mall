@@ -3,6 +3,7 @@ package com.macro.mall.controller;
 import com.macro.mall.common.api.CommonPage;
 import com.macro.mall.common.api.CommonResult;
 import com.macro.mall.model.UmsMenu;
+import com.macro.mall.model.UmsResource;
 import com.macro.mall.model.UmsRole;
 import com.macro.mall.service.UmsRoleService;
 import io.swagger.annotations.Api;
@@ -164,11 +165,56 @@ public class UmsRoleController {
      */
     @ResponseBody
     @ApiOperation(value = "获取角色相关菜单")
-    @RequestMapping(value = "/listMenu/{roleId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/listMenu/{roleId}", method = RequestMethod.GET)
     public CommonResult<List<UmsMenu>> listMenu(@PathVariable Long roleId) {
         List<UmsMenu> umsMenuList = umsRoleService.listMenu(roleId);
         return CommonResult.success(umsMenuList);
     }
 
+    /**
+     * 获取角色相关资源
+     *
+     * @param roleId
+     * @return
+     */
+    @ResponseBody
+    @ApiOperation(value = "获取角色相关资源")
+    @RequestMapping(value = "/listResource/{roleId}", method = RequestMethod.GET)
+    public CommonResult<List<UmsResource>> listResource(@PathVariable Long roleId) {
+        List<UmsResource> umsResourceList = umsRoleService.listResource(roleId);
+        return CommonResult.success(umsResourceList);
+    }
+
+    /**
+     * 给角色分配菜单
+     *
+     * @param roleId
+     * @param menuIds
+     * @return
+     */
+    @ResponseBody
+    @ApiOperation(value = "给角色分配菜单")
+    @RequestMapping(value = "/allocMenu", method = RequestMethod.POST)
+    public CommonResult allocMenu(@RequestParam(value = "roleId") Long roleId,
+                                  @RequestParam(value = "menuIds") List<Long> menuIds) {
+        int count = umsRoleService.allocMenu(roleId, menuIds);
+        return CommonResult.success(count);
+    }
+
+    /**
+     * 给角色分配资源
+     *
+     * @param roleId
+     * @param resourceIds
+     * @return
+     */
+    @ResponseBody
+    @ApiOperation(value = "给角色分配资源")
+    @RequestMapping(value = "/allocResource", method = RequestMethod.POST)
+    public CommonResult allocResource(@RequestParam(value = "roleId") Long roleId,
+                                      @RequestParam(value = "resourceIds") List<Long> resourceIds) {
+        int count = umsRoleService.allocResource(roleId, resourceIds);
+        return CommonResult.success(count);
+    }
 
 }

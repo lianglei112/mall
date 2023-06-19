@@ -3,8 +3,11 @@ package com.macro.mall.service.impl;
 import cn.hutool.core.collection.CollectionUtil;
 import com.github.pagehelper.PageHelper;
 import com.macro.mall.dao.UmsAdminRoleRelationDao;
+import com.macro.mall.dao.UmsRoleDao;
 import com.macro.mall.mapper.UmsAdminRoleRelationMapper;
 import com.macro.mall.mapper.UmsRoleMapper;
+import com.macro.mall.mapper.UmsRoleMenuRelationMapper;
+import com.macro.mall.mapper.UmsRoleResourceRelationMapper;
 import com.macro.mall.model.*;
 import com.macro.mall.service.UmsRoleService;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +41,12 @@ public class UmsRoleServiceImpl implements UmsRoleService {
 
     @Autowired
     private UmsRoleDao umsRoleDao;
+
+    @Autowired
+    private UmsRoleMenuRelationMapper umsRoleMenuRelationMapper;
+
+    @Autowired
+    private UmsRoleResourceRelationMapper umsRoleResourceRelationMapper;
 
     @Override
     public List<UmsRole> getRoleList(Long adminId) {
@@ -119,6 +128,45 @@ public class UmsRoleServiceImpl implements UmsRoleService {
 
     @Override
     public List<UmsMenu> listMenu(Long roleId) {
-        return null;
+        return umsRoleDao.getMenuListByRoleId(roleId);
+    }
+
+    @Override
+    public List<UmsResource> listResource(Long roleId) {
+        return umsRoleDao.getResourceListByRoleId(roleId);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+    public int allocMenu(Long roleId, List<Long> menuIds) {
+        //先删除原有关系
+        UmsRoleMenuRelationExample example = new UmsRoleMenuRelationExample();
+        example.createCriteria().andRoleIdEqualTo(roleId);
+        umsRoleMenuRelationMapper.deleteByExample(example);
+        //批量插入新关系
+        for (Long menuId : menuIds) {
+            UmsRoleMenuRelation roleMenuRelation = new UmsRoleMenuRelation();
+            roleMenuRelation.setRoleId(roleId);
+            roleMenuRelation.setMenuId(menuId);
+            umsRoleMenuRelationMapper.insert(roleMenuRelation);
+        }
+        return menuIds.size();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+    public int allocResource(Long roleId, List<Long> resourceIds) {
+        //先删除原有关系
+        UmsRoleResourceRelationExample example = new UmsRoleResourceRelationExample();
+        example.createCriteria().andRoleIdEqualTo(roleId);
+        umsRoleResourceRelationMapper.deleteByExample(example);
+        //批量插入新关系
+        for (Long resourceId : resourceIds) {
+            UmsRoleResourceRelation umsRoleResourceRelation = new UmsRoleResourceRelation();
+            umsRoleResourceRelation.setRoleId(roleId);
+            umsRoleResourceRelation.setResourceId(resourceId);
+            umsRoleResourceRelationMapper.insert(umsRoleResourceRelation);
+        }
+        return resourceIds.size();
     }
 }

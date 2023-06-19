@@ -33,7 +33,6 @@ import java.util.List;
 @Api(tags = "UmsAdminController", description = "后台用户管理控制器")
 public class UmsAdminController {
 
-
     private static final Logger LOGGER = LoggerFactory.getLogger(UmsAdminController.class);
 
     @Autowired
@@ -59,6 +58,8 @@ public class UmsAdminController {
         }
         return CommonResult.success(umsAdmin);
     }
+
+
 
     /**
      * 根据用户名或姓名分页获取用户列表

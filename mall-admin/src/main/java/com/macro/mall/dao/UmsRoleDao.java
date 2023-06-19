@@ -1,5 +1,11 @@
 package com.macro.mall.dao;
 
+import com.macro.mall.model.UmsMenu;
+import com.macro.mall.model.UmsResource;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+
 /**
  * @version 1.0
  * @Author lianglei
@@ -7,4 +13,8 @@ package com.macro.mall.dao;
  * @description
  */
 public interface UmsRoleDao {
+
+    List<UmsMenu> getMenuListByRoleId(@Param("roleId") Long roleId);
+
+    List<UmsResource> getResourceListByRoleId(@Param("roleId") Long roleId);
 }

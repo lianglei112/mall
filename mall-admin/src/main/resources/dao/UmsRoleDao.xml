@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.macro.mall.dao.UmsRoleDao">
+
+    <select id="getMenuListByRoleId" resultType="com.macro.mall.model.UmsMenu">
+        SELECT
+            m.id AS id,
+            m.parent_id AS parentId,
+            m.create_time AS createTime,
+            m.title AS title,
+            m.`level` AS `level`,
+            m.sort AS sort,
+            m.`name` AS NAME,
+            m.icon AS icon,
+            m.hidden AS hidden
+        FROM
+            ums_role_menu_relation rmr
+            LEFT JOIN ums_menu m ON m.id = rmr.menu_id
+        WHERE
+            rmr.role_id = #{roleId}
+            AND m.id IS NOT NULL
+        GROUP BY
+            m.id
+    </select>
+
+    <select id="getResourceListByRoleId" resultType="com.macro.mall.model.UmsResource">
+        SELECT
+            r.id AS id,
+            r.create_time AS createTime,
+            r.`name` AS NAME,
+            r.url AS url,
+            r.description AS description,
+            r.category_id AS categoryId
+        FROM
+            ums_role_resource_relation rrr
+            LEFT JOIN ums_resource r ON rrr.resource_id = r.id
+        WHERE
+            rrr.role_id = #{roleId}
+            AND r.id IS NOT NULL
+        GROUP BY
+            r.id
+    </select>
+
+</mapper>

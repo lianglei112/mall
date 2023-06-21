@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.macro.mall.dao.UmsAdminRoleRelationDao">
+
     <select id="getRoleList" resultType="com.macro.mall.mapper.UmsRoleMapper.BaseResultMap">
         SELECT
             r.*
@@ -10,5 +11,13 @@
         WHERE
             ar.admin_id = #{adminId}
     </select>
+
+    <insert id="insertList">
+        INSERT INTO ums_admin_role_relation ( admin_id, role_id ) VALUES
+        <foreach collection="list" separator="," item="item" index="index">
+            (#{item.adminId,jdbcType=BIGINT},
+            #{item.roleId,jdbcType=BIGINT})
+        </foreach>
+    </insert>
 
 </mapper>

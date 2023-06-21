@@ -2,6 +2,7 @@ package com.macro.mall.controller;
 
 import com.macro.mall.common.api.CommonPage;
 import com.macro.mall.common.api.CommonResult;
+import com.macro.mall.dto.UmsMenuNode;
 import com.macro.mall.model.UmsMenu;
 import com.macro.mall.service.UmsMenuService;
 import io.swagger.annotations.Api;
@@ -111,12 +112,25 @@ public class UmsMenuController {
      */
     @ResponseBody
     @ApiOperation(value = "分页查询后台菜单")
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public CommonResult<CommonPage<UmsMenu>> list(@PathVariable Long parentId,
                                                   @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                                   @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
         List<UmsMenu> umsMenuList = umsMenuService.list(parentId, pageNum, pageSize);
         return CommonResult.success(CommonPage.restPage(umsMenuList));
+    }
+
+    /**
+     * 树形结构返回所有菜单列表
+     *
+     * @return
+     */
+    @ResponseBody
+    @ApiOperation(value = "树形结构返回所有菜单列表")
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public CommonResult<List<UmsMenuNode>> treeList() {
+        List<UmsMenuNode> umsMenuNodeList = umsMenuService.treeList();
+        return CommonResult.success(umsMenuNodeList);
     }
 
 

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -63,7 +64,7 @@ public class UmsResourceController {
     @ResponseBody
     @ApiOperation(value = "修改后台资源")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
-    public CommonResult update(@PathVariable Long id, @RequestBody UmsResource umsResource) {
+    public CommonResult update(@PathVariable @NotNull(message = "资源id不能为空！") Long id, @RequestBody UmsResource umsResource) {
         int count = umsResourceService.update(id, umsResource);
         if (count > 0) {
             return CommonResult.success(count);
@@ -80,7 +81,7 @@ public class UmsResourceController {
     @ResponseBody
     @ApiOperation(value = "根据ID删除后台资源")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
-    public CommonResult delete(@PathVariable Long id) {
+    public CommonResult delete(@PathVariable @NotNull(message = "资源id不能为空！") Long id) {
         int count = umsResourceService.delete(id);
         if (count > 0) {
             return CommonResult.success(count);
@@ -97,7 +98,7 @@ public class UmsResourceController {
     @ResponseBody
     @ApiOperation(value = "根据ID获取后台资源详情")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public CommonResult<UmsResource> getItem(@PathVariable Long id) {
+    public CommonResult<UmsResource> getItem(@PathVariable @NotNull(message = "资源id不能为空！") Long id) {
         UmsResource umsResource = umsResourceService.getItem(id);
         return CommonResult.success(umsResource);
     }

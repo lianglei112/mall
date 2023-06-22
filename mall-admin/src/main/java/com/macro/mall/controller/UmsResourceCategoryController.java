@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -61,7 +62,8 @@ public class UmsResourceCategoryController {
     @ResponseBody
     @ApiOperation(value = "根据ID修改后台资源")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
-    public CommonResult update(@PathVariable Long id, @RequestBody UmsResourceCategory umsResourceCategory) {
+    public CommonResult update(@PathVariable @NotNull(message = "资源分类id不能为空！") Long id,
+                               @RequestBody UmsResourceCategory umsResourceCategory) {
         int count = umsResourceCategoryService.update(id, umsResourceCategory);
         if (count > 0) {
             return CommonResult.success(count);
@@ -78,7 +80,7 @@ public class UmsResourceCategoryController {
     @ResponseBody
     @ApiOperation(value = "根据ID删除后台资源")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
-    public CommonResult delete(@PathVariable Long id) {
+    public CommonResult delete(@PathVariable @NotNull(message = "资源分类id不能为空！") Long id) {
         int count = umsResourceCategoryService.delete(id);
         if (count > 0) {
             return CommonResult.success(count);

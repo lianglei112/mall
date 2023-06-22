@@ -1,6 +1,9 @@
 package com.macro.mall.model;
 
 import io.swagger.annotations.ApiModelProperty;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -13,9 +16,11 @@ public class UmsMenu implements Serializable {
     @ApiModelProperty(value = "创建时间")
     private Date createTime;
 
+    @NotBlank(message = "菜单名称不能为空！")
     @ApiModelProperty(value = "菜单名称")
     private String title;
 
+    @NotNull(message = "菜单级数不能为空！")
     @ApiModelProperty(value = "菜单级数")
     private Integer level;
 

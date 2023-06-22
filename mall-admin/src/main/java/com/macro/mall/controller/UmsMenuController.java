@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -45,7 +47,7 @@ public class UmsMenuController {
     @ResponseBody
     @ApiOperation(value = "添加后台菜单")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public CommonResult create(@RequestBody UmsMenu umsMenu) {
+    public CommonResult create(@RequestBody @Valid UmsMenu umsMenu) {
         int count = umsMenuService.create(umsMenu);
         if (count > 0) {
             return CommonResult.success(count);
@@ -63,7 +65,8 @@ public class UmsMenuController {
     @ResponseBody
     @ApiOperation(value = "修改后台菜单")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
-    public CommonResult update(@PathVariable Long id, @RequestBody UmsMenu umsMenu) {
+    public CommonResult update(@NotNull(message = "菜单主键不能为空！") @PathVariable Long id,
+                               @RequestBody UmsMenu umsMenu) {
         int count = umsMenuService.update(id, umsMenu);
         if (count > 0) {
             return CommonResult.success(count);
@@ -80,7 +83,7 @@ public class UmsMenuController {
     @ResponseBody
     @ApiOperation(value = "根据ID获取后台菜单")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public CommonResult<UmsMenu> getItem(@PathVariable Long id) {
+    public CommonResult<UmsMenu> getItem(@PathVariable @NotNull(message = "菜单主键不能为空！") Long id) {
         UmsMenu umsMenu = umsMenuService.getItem(id);
         return CommonResult.success(umsMenu);
     }
@@ -94,7 +97,7 @@ public class UmsMenuController {
     @ResponseBody
     @ApiOperation(value = "根据ID删除后台菜单")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
-    public CommonResult delete(@PathVariable Long id) {
+    public CommonResult delete(@PathVariable @NotNull(message = "菜单主键不能为空！") Long id) {
         int count = umsMenuService.delete(id);
         if (count > 0) {
             return CommonResult.success(count);
@@ -144,7 +147,8 @@ public class UmsMenuController {
     @ResponseBody
     @ApiOperation("修改菜单显示状态")
     @RequestMapping(value = "/updateHidden/{id}", method = RequestMethod.POST)
-    public CommonResult updateHidden(@PathVariable Long id, @RequestParam("hidden") Integer hidden) {
+    public CommonResult updateHidden(@PathVariable @NotNull(message = "菜单主键不能为空！") Long id,
+                                     @NotNull(message = "隐藏状态不能为空！") @RequestParam("hidden") Integer hidden) {
         int count = umsMenuService.updateHidden(id, hidden);
         if (count > 0) {
             return CommonResult.success(count);

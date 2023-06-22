@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -78,7 +79,7 @@ public class UmsRoleController {
     @ResponseBody
     @ApiOperation(value = "获取指定角色信息")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public CommonResult<UmsRole> getItem(@PathVariable Long id) {
+    public CommonResult<UmsRole> getItem(@PathVariable @NotNull(message = "角色id不能为空！") Long id) {
         return CommonResult.success(umsRoleService.getItem(id));
     }
 
@@ -92,7 +93,7 @@ public class UmsRoleController {
     @ResponseBody
     @ApiOperation(value = "修改角色")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
-    public CommonResult update(@PathVariable Long id, @RequestBody UmsRole umsRole) {
+    public CommonResult update(@PathVariable @NotNull(message = "角色id不能为空！") Long id,  @RequestBody UmsRole umsRole) {
         int count = umsRoleService.update(id, umsRole);
         if (count > 0) {
             return CommonResult.success(count);
@@ -147,7 +148,8 @@ public class UmsRoleController {
     @ResponseBody
     @ApiOperation(value = "修改角色状态")
     @RequestMapping(value = "/updateStatus/{id}", method = RequestMethod.POST)
-    public CommonResult updateStatus(@PathVariable Long id, @RequestParam(value = "status") Integer status) {
+    public CommonResult updateStatus(@PathVariable @NotNull(message = "角色id不能为空！") Long id,
+                                     @RequestParam(value = "status") Integer status) {
         UmsRole umsRole = new UmsRole();
         umsRole.setStatus(status);
         int count = umsRoleService.update(id, umsRole);
@@ -166,7 +168,7 @@ public class UmsRoleController {
     @ResponseBody
     @ApiOperation(value = "获取角色相关菜单")
     @RequestMapping(value = "/listMenu/{roleId}", method = RequestMethod.GET)
-    public CommonResult<List<UmsMenu>> listMenu(@PathVariable Long roleId) {
+    public CommonResult<List<UmsMenu>> listMenu(@PathVariable @NotNull(message = "角色id不能为空！") Long roleId) {
         List<UmsMenu> umsMenuList = umsRoleService.listMenu(roleId);
         return CommonResult.success(umsMenuList);
     }
@@ -180,7 +182,7 @@ public class UmsRoleController {
     @ResponseBody
     @ApiOperation(value = "获取角色相关资源")
     @RequestMapping(value = "/listResource/{roleId}", method = RequestMethod.GET)
-    public CommonResult<List<UmsResource>> listResource(@PathVariable Long roleId) {
+    public CommonResult<List<UmsResource>> listResource(@PathVariable @NotNull(message = "角色id不能为空！") Long roleId) {
         List<UmsResource> umsResourceList = umsRoleService.listResource(roleId);
         return CommonResult.success(umsResourceList);
     }
@@ -195,7 +197,7 @@ public class UmsRoleController {
     @ResponseBody
     @ApiOperation(value = "给角色分配菜单")
     @RequestMapping(value = "/allocMenu", method = RequestMethod.POST)
-    public CommonResult allocMenu(@RequestParam(value = "roleId") Long roleId,
+    public CommonResult allocMenu(@RequestParam(value = "roleId") @NotNull(message = "角色id不能为空！") Long roleId,
                                   @RequestParam(value = "menuIds") List<Long> menuIds) {
         int count = umsRoleService.allocMenu(roleId, menuIds);
         return CommonResult.success(count);
@@ -211,7 +213,7 @@ public class UmsRoleController {
     @ResponseBody
     @ApiOperation(value = "给角色分配资源")
     @RequestMapping(value = "/allocResource", method = RequestMethod.POST)
-    public CommonResult allocResource(@RequestParam(value = "roleId") Long roleId,
+    public CommonResult allocResource(@RequestParam(value = "roleId") @NotNull(message = "角色id不能为空！") Long roleId,
                                       @RequestParam(value = "resourceIds") List<Long> resourceIds) {
         int count = umsRoleService.allocResource(roleId, resourceIds);
         return CommonResult.success(count);

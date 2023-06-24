@@ -41,48 +41,135 @@
         <!-- 用于控制Mapper接口的生成 -->
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.macro.mall.mapper"
                              targetProject="mall-mbg\src\main\java"/>
+
+        <!--    用户相关表结构生成    -->
         <!-- 配置需要生成的表，生成全部表tableName设为% -->
-        <table tableName="ums_admin">
+        <!--        <table tableName="ums_admin">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="ums_admin_login_log">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="ums_admin_role_relation">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="ums_menu">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="ums_permission">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="ums_resource">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="ums_resource_category">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="ums_role">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="ums_role_menu_relation">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="ums_role_permission_relation">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="ums_role_resource_relation">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+
+        <!--        &lt;!&ndash;   商品相关别结构生成     &ndash;&gt;-->
+        <!--        <table tableName="pms_album">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="pms_album_pic">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="pms_brand">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="pms_comment">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="pms_comment_replay">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="pms_feight_template">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="pms_member_price">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="pms_product">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="pms_product_attribute">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="pms_product_attribute_category">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="pms_product_attribute_value">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="pms_product_category">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="pms_product_category_attribute_relation">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="pms_product_full_reduction">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="pms_product_ladder">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="pms_product_operate_log">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="pms_product_vertify_record">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="pms_sku_stock">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+
+
+        <!--  专题相关表结构生成   -->
+        <table tableName="cms_prefrence_area_product_relation">
             <!-- 用来指定主键生成策略 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="ums_admin_login_log">
-            <!-- 用来指定主键生成策略 -->
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="ums_admin_role_relation">
-            <!-- 用来指定主键生成策略 -->
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="ums_menu">
-            <!-- 用来指定主键生成策略 -->
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="ums_permission">
-            <!-- 用来指定主键生成策略 -->
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="ums_resource">
-            <!-- 用来指定主键生成策略 -->
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="ums_resource_category">
-            <!-- 用来指定主键生成策略 -->
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="ums_role">
-            <!-- 用来指定主键生成策略 -->
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="ums_role_menu_relation">
-            <!-- 用来指定主键生成策略 -->
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="ums_role_permission_relation">
-            <!-- 用来指定主键生成策略 -->
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="ums_role_resource_relation">
+        <table tableName="cms_subject_product_relation">
             <!-- 用来指定主键生成策略 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>

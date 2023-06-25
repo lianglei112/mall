@@ -2,12 +2,15 @@ package com.macro.mall.service.impl;
 
 import com.macro.mall.mapper.UmsResourceCategoryMapper;
 import com.macro.mall.model.UmsResourceCategory;
+import com.macro.mall.model.UmsResourceCategoryExample;
 import com.macro.mall.service.UmsResourceCategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @version 1.0
@@ -38,6 +41,11 @@ public class UmsResourceCategoryServiceImpl implements UmsResourceCategoryServic
     public int update(Long id, UmsResourceCategory umsResourceCategory) {
         umsResourceCategory.setId(id);
         return umsResourceCategoryMapper.updateByPrimaryKeySelective(umsResourceCategory);
+    }
+
+    @Override
+    public List<UmsResourceCategory> listAll() {
+        return umsResourceCategoryMapper.selectByExample(new UmsResourceCategoryExample());
     }
 
 

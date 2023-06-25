@@ -22,4 +22,12 @@ public interface PmsSkuStockDao {
      * @return
      */
     int insertList(@Param("list") List<PmsSkuStock> dataList);
+
+    /**
+     * 批量插入/更新商品库存信息
+     *
+     * @param stockList
+     * @return
+     */
+    int replaceList(@Param("list") List<PmsSkuStock> stockList);
 }

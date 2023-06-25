@@ -13,4 +13,19 @@
         </foreach>
     </insert>
 
+    <insert id="replaceList">
+        REPLACE INTO pms_sku_stock (id,product_id, sku_code, price, stock, low_stock,pic, sale, sp_data) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id,jdbcType=BIGINT},
+            #{item.productId,jdbcType=BIGINT},
+            #{item.skuCode,jdbcType=VARCHAR},
+            #{item.price,jdbcType=DECIMAL},
+            #{item.stock,jdbcType=INTEGER},
+            #{item.lowStock,jdbcType=INTEGER},
+            #{item.pic,jdbcType=VARCHAR},
+            #{item.sale,jdbcType=INTEGER},
+            #{item.spData,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
 </mapper>

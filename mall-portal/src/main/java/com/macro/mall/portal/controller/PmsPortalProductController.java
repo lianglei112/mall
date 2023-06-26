@@ -3,6 +3,7 @@ package com.macro.mall.portal.controller;
 import com.macro.mall.common.api.CommonPage;
 import com.macro.mall.common.api.CommonResult;
 import com.macro.mall.model.PmsProduct;
+import com.macro.mall.portal.domain.PmsPortalProductDetail;
 import com.macro.mall.portal.domain.PmsProductCategoryNode;
 import com.macro.mall.portal.service.PmsPortalProductService;
 import io.swagger.annotations.Api;
@@ -63,6 +64,20 @@ public class PmsPortalProductController {
     public CommonResult<List<PmsProductCategoryNode>> categoryTreeList() {
         List<PmsProductCategoryNode> list = pmsPortalProductService.categoryTreeList();
         return CommonResult.success(list);
+    }
+
+    /**
+     * 获取前台商品详情
+     *
+     * @param id
+     * @return
+     */
+    @ApiOperation(value = "获取前台商品详情")
+    @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public CommonResult<PmsPortalProductDetail> detail(@PathVariable Long id) {
+        PmsPortalProductDetail pmsPortalProductDetail = pmsPortalProductService.detail(id);
+        return CommonResult.success(pmsPortalProductDetail);
     }
 
 

@@ -1,13 +1,18 @@
 package com.macro.mall.service.impl;
 
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
+import com.macro.mall.dao.UmsAdminRoleRelationDao;
 import com.macro.mall.dto.UmsAdminParam;
 import com.macro.mall.mapper.UmsAdminMapper;
 import com.macro.mall.model.UmsAdmin;
 import com.macro.mall.model.UmsAdminExample;
+import com.macro.mall.model.UmsResource;
+import com.macro.mall.service.UmsAdminCacheService;
 import com.macro.mall.service.UmsAdminService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +28,7 @@ import java.util.List;
  * @date 2023/6/18 20:13
  * @deprecated service实现层
  */
+@Slf4j
 @Service
 public class UmsAdminServiceImpl implements UmsAdminService {
 
@@ -31,6 +37,12 @@ public class UmsAdminServiceImpl implements UmsAdminService {
 
     @Autowired
     private UmsAdminMapper umsAdminMapper;
+
+    @Autowired
+    private UmsAdminCacheService adminCacheService;
+
+    @Autowired
+    private UmsAdminRoleRelationDao umsAdminRoleRelationDao;
 
     /**
      * 用户注册
@@ -124,6 +136,37 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     @Override
     public int delete(Long id) {
         return umsAdminMapper.deleteByPrimaryKey(id);
+    }
+
+
+    @Override
+    public UmsAdmin getAdminByUsername(String username) {
+        UmsAdmin admin = adminCacheService.getAdmin(username);
+        if (admin != null) {
+            return admin;
+        }
+        UmsAdminExample example = new UmsAdminExample();
+        example.createCriteria().andUsernameEqualTo(username);
+        List<UmsAdmin> adminList = umsAdminMapper.selectByExample(example);
+        if (adminList != null && adminList.size() > 0) {
+            admin = adminList.get(0);
+            adminCacheService.setAdmin(admin);
+            return admin;
+        }
+        return null;
+    }
+
+    @Override
+    public List<UmsResource> getResourceList(Long adminId) {
+        List<UmsResource> resourceList = adminCacheService.getResourceList(adminId);
+        if (CollUtil.isNotEmpty(resourceList)) {
+            return resourceList;
+        }
+        resourceList = umsAdminRoleRelationDao.getResourceList(adminId);
+        if (CollUtil.isNotEmpty(resourceList)) {
+            adminCacheService.setResourceList(adminId, resourceList);
+        }
+        return resourceList;
     }
 
 

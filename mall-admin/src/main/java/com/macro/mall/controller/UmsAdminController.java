@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -51,14 +53,13 @@ public class UmsAdminController {
     @ResponseBody
     @ApiOperation(value = "用户注册")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public CommonResult<UmsAdmin> register(@Validated @RequestBody UmsAdminParam umsAdminParam) {
+    public CommonResult<UmsAdmin> register(@Valid @RequestBody UmsAdminParam umsAdminParam) {
         UmsAdmin umsAdmin = umsAdminService.register(umsAdminParam);
         if (umsAdmin == null) {
             CommonResult.failed("注册失败，请稍后重试！");
         }
         return CommonResult.success(umsAdmin);
     }
-
 
 
     /**
@@ -88,7 +89,7 @@ public class UmsAdminController {
     @ResponseBody
     @ApiOperation(value = "获取用户指定信息")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public CommonResult<UmsAdmin> getItem(@PathVariable Long id) {
+    public CommonResult<UmsAdmin> getItem(@PathVariable @NotNull(message = "用户主键不能为空！") Long id) {
         UmsAdmin umsAdmin = umsAdminService.getItem(id);
         return CommonResult.success(umsAdmin);
     }
@@ -104,7 +105,7 @@ public class UmsAdminController {
     @ResponseBody
     @ApiOperation(value = "修改指定用户信息")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
-    public CommonResult update(@PathVariable Long id, @RequestBody UmsAdmin admin) {
+    public CommonResult update(@PathVariable @NotNull(message = "用户主键不能为空！") Long id, @RequestBody UmsAdmin admin) {
         int count = umsAdminService.update(id, admin);
         if (count > 0) {
             return CommonResult.success(count);
@@ -121,7 +122,7 @@ public class UmsAdminController {
     @ResponseBody
     @ApiOperation(value = "删除指定用户信息")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
-    public CommonResult delete(@PathVariable Long id) {
+    public CommonResult delete(@PathVariable @NotNull(message = "用户主键不能为空！") Long id) {
         int count = umsAdminService.delete(id);
         if (count > 0) {
             return CommonResult.success(count);
@@ -139,9 +140,11 @@ public class UmsAdminController {
     @ResponseBody
     @ApiOperation(value = "修改账号状态")
     @RequestMapping(value = "/updateStatus/{id}", method = RequestMethod.POST)
-    public CommonResult updateStatus(@PathVariable Long id, @RequestParam(value = "status") Integer status) {
+    public CommonResult updateStatus(@PathVariable @NotNull(message = "用户主键不能为空！") Long id,
+                                     @RequestParam(value = "status") @NotNull(message = "修改状态也不能为空！") Integer status) {
         UmsAdmin umsAdmin = new UmsAdmin();
         umsAdmin.setId(id);
+        umsAdmin.setStatus(status);
         int count = umsAdminService.update(id, umsAdmin);
         if (count > 0) {
             return CommonResult.success(count);
@@ -158,7 +161,7 @@ public class UmsAdminController {
     @ResponseBody
     @ApiOperation(value = "获取指定用户的角色")
     @RequestMapping(value = "/role/{adminId}", method = RequestMethod.POST)
-    public CommonResult<List<UmsRole>> getRoleList(Long adminId) {
+    public CommonResult<List<UmsRole>> getRoleList(@NotNull(message = "用户主键不能为空！") @PathVariable Long adminId) {
         List<UmsRole> umsRoleList = umsRoleService.getRoleList(adminId);
         return CommonResult.success(umsRoleList);
     }
@@ -173,7 +176,7 @@ public class UmsAdminController {
     @ResponseBody
     @ApiOperation("给用户分配角色")
     @RequestMapping(value = "/role/update", method = RequestMethod.POST)
-    public CommonResult updateRole(@RequestParam("adminId") Long adminId,
+    public CommonResult updateRole(@NotNull(message = "用户主键不能为空！") @RequestParam("adminId") Long adminId,
                                    @RequestParam("roleIds") List<Long> roleIds) {
         int count = umsRoleService.updateRole(adminId, roleIds);
         if (count >= 0) {

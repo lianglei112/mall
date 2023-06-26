@@ -24,7 +24,7 @@ secure:
       - /**/v2/api-docs
       - /**/*.js
       - /**/*.css
-      - /**/*.png
+      - /**/*.pngspring-boot-starter-validation
       - /**/*.ico
       - /webjars/springfox-swagger-ui/**
       - /druid/**

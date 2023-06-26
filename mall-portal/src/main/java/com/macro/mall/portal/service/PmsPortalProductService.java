@@ -1,7 +1,7 @@
-package com.macro.mall.portal.config.service;
+package com.macro.mall.portal.service;
 
 import com.macro.mall.model.PmsProduct;
-import com.macro.mall.portal.config.domain.PmsProductCategoryNode;
+import com.macro.mall.portal.domain.PmsProductCategoryNode;
 
 import java.util.List;
 

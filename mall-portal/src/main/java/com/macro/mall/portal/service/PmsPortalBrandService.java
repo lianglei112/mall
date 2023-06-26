@@ -1,4 +1,4 @@
-package com.macro.mall.portal.config.service;
+package com.macro.mall.portal.service;
 
 import com.macro.mall.model.PmsBrand;
 import com.macro.mall.model.PmsProduct;

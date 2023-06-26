@@ -1,4 +1,4 @@
-package com.macro.mall.portal.config.service.impl;
+package com.macro.mall.portal.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
@@ -8,8 +8,8 @@ import com.macro.mall.model.PmsProduct;
 import com.macro.mall.model.PmsProductCategory;
 import com.macro.mall.model.PmsProductCategoryExample;
 import com.macro.mall.model.PmsProductExample;
-import com.macro.mall.portal.config.domain.PmsProductCategoryNode;
-import com.macro.mall.portal.config.service.PmsPortalProductService;
+import com.macro.mall.portal.domain.PmsProductCategoryNode;
+import com.macro.mall.portal.service.PmsPortalProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;

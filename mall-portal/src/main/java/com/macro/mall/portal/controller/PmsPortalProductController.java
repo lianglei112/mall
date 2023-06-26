@@ -1,10 +1,10 @@
-package com.macro.mall.portal.config.controller;
+package com.macro.mall.portal.controller;
 
 import com.macro.mall.common.api.CommonPage;
 import com.macro.mall.common.api.CommonResult;
 import com.macro.mall.model.PmsProduct;
-import com.macro.mall.portal.config.domain.PmsProductCategoryNode;
-import com.macro.mall.portal.config.service.PmsPortalProductService;
+import com.macro.mall.portal.domain.PmsProductCategoryNode;
+import com.macro.mall.portal.service.PmsPortalProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -64,4 +64,6 @@ public class PmsPortalProductController {
         List<PmsProductCategoryNode> list = pmsPortalProductService.categoryTreeList();
         return CommonResult.success(list);
     }
+
+
 }

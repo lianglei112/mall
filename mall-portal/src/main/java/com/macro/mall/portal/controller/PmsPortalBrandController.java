@@ -1,10 +1,10 @@
-package com.macro.mall.portal.config.controller;
+package com.macro.mall.portal.controller;
 
 import com.macro.mall.common.api.CommonPage;
 import com.macro.mall.common.api.CommonResult;
 import com.macro.mall.model.PmsBrand;
 import com.macro.mall.model.PmsProduct;
-import com.macro.mall.portal.config.service.PmsPortalBrandService;
+import com.macro.mall.portal.service.PmsPortalBrandService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 

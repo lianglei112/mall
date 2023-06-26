@@ -1,4 +1,4 @@
-package com.macro.mall.portal.config.service.impl;
+package com.macro.mall.portal.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.macro.mall.mapper.PmsBrandMapper;
@@ -6,7 +6,7 @@ import com.macro.mall.mapper.PmsProductMapper;
 import com.macro.mall.model.PmsBrand;
 import com.macro.mall.model.PmsProduct;
 import com.macro.mall.model.PmsProductExample;
-import com.macro.mall.portal.config.service.PmsPortalBrandService;
+import com.macro.mall.portal.service.PmsPortalBrandService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

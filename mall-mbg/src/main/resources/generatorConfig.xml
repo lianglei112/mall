@@ -163,13 +163,46 @@
         <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--        </table>-->
 
+        <!--        &lt;!&ndash;  专题相关表结构生成   &ndash;&gt;-->
+        <!--        <table tableName="cms_prefrence_area_product_relation">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="cms_subject_product_relation">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
 
-        <!--  专题相关表结构生成   -->
-        <table tableName="cms_prefrence_area_product_relation">
+        <!--    订单相关表结构生成    -->
+        <table tableName="oms_cart_item">
             <!-- 用来指定主键生成策略 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="cms_subject_product_relation">
+        <table tableName="oms_company_address">
+            <!-- 用来指定主键生成策略 -->
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="oms_order">
+            <!-- 用来指定主键生成策略 -->
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="oms_order_item">
+            <!-- 用来指定主键生成策略 -->
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="oms_order_operate_history">
+            <!-- 用来指定主键生成策略 -->
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="oms_order_return_apply">
+            <!-- 用来指定主键生成策略 -->
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="oms_order_return_reason">
+            <!-- 用来指定主键生成策略 -->
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="oms_order_setting">
             <!-- 用来指定主键生成策略 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>

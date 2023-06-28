@@ -2,8 +2,7 @@ package com.macro.mall.controller;
 
 import com.macro.mall.common.api.CommonPage;
 import com.macro.mall.common.api.CommonResult;
-import com.macro.mall.dto.OmsOrderDeliveryParam;
-import com.macro.mall.dto.OmsOrderQueryParam;
+import com.macro.mall.dto.*;
 import com.macro.mall.model.OmsOrder;
 import com.macro.mall.service.OmsOrderService;
 import io.swagger.annotations.Api;
@@ -109,4 +108,65 @@ public class OmsOrderController {
         return CommonResult.failed("批量删除订单失败，请稍后重试！");
     }
 
+    /**
+     * 获取订单详情：订单信息、商品信息、操作记录
+     *
+     * @param id
+     * @return
+     */
+    @ApiOperation(value = "获取订单详情：订单信息、商品信息、操作记录")
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public CommonResult<OmsOrderDetail> detail(@PathVariable Long id) {
+        OmsOrderDetail omsOrderDetail = omsOrderService.detail(id);
+        return CommonResult.success(omsOrderDetail);
+    }
+
+    /**
+     * 修改收货人信息
+     *
+     * @param receiverInfoParam
+     * @return
+     */
+    @ApiOperation(value = "修改收货人信息")
+    @RequestMapping(value = "/update/receiverInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public CommonResult updateReceiverInfo(@RequestBody OmsReceiverInfoParam receiverInfoParam) {
+        int count = omsOrderService.updateReceiverInfo(receiverInfoParam);
+        if (count > 0) {
+            return CommonResult.success(count);
+        }
+        return CommonResult.failed("修改收货人信息失败，请稍后重试！");
+    }
+
+    /**
+     * 修改订单费用信息
+     *
+     * @param omsMoneyInfoParam
+     * @return
+     */
+    @ApiOperation(value = "修改订单费用信息")
+    @RequestMapping(value = "/update/receiverInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public CommonResult updateMoneyInfo(@RequestBody OmsMoneyInfoParam omsMoneyInfoParam) {
+        int count = omsOrderService.updateMoneyInfo(omsMoneyInfoParam);
+        if (count > 0) {
+            return CommonResult.success(count);
+        }
+        return CommonResult.failed("修改订单费用信息失败，请稍后重试！");
+    }
+
+
+    @ApiOperation(value = "备注订单")
+    @RequestMapping(value = "/update/note", method = RequestMethod.POST)
+    @ResponseBody
+    public CommonResult updateNote(@RequestParam(name = "id") Long id,
+                                   @RequestParam(name = "note") String note,
+                                   @RequestParam(name = "status") Integer status) {
+        int count = omsOrderService.updateNote(id, note, status);
+        if (count > 0) {
+            return CommonResult.success(count);
+        }
+        return CommonResult.failed("备注订单信息失败，请稍后重试！");
+    }
 }

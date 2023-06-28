@@ -3,8 +3,7 @@ package com.macro.mall.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.macro.mall.dao.OmsOrderDao;
 import com.macro.mall.dao.OmsOrderOperateHistoryDao;
-import com.macro.mall.dto.OmsOrderDeliveryParam;
-import com.macro.mall.dto.OmsOrderQueryParam;
+import com.macro.mall.dto.*;
 import com.macro.mall.mapper.OmsOrderMapper;
 import com.macro.mall.mapper.OmsOrderOperateHistoryMapper;
 import com.macro.mall.model.OmsOrder;
@@ -109,5 +108,72 @@ public class OmsOrderServiceImpl implements OmsOrderService {
         OmsOrderExample example = new OmsOrderExample();
         example.createCriteria().andDeleteStatusEqualTo(0).andIdIn(ids);
         return omsOrderMapper.updateByExample(omsOrder, example);
+    }
+
+    @Override
+    public OmsOrderDetail detail(Long id) {
+        return omsOrderDao.detail(id);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+    public int updateReceiverInfo(OmsReceiverInfoParam receiverInfoParam) {
+        OmsOrder order = new OmsOrder();
+        order.setId(receiverInfoParam.getOrderId());
+        order.setReceiverName(receiverInfoParam.getReceiverName());
+        order.setReceiverPhone(receiverInfoParam.getReceiverPhone());
+        order.setReceiverPostCode(receiverInfoParam.getReceiverPostCode());
+        order.setReceiverProvince(receiverInfoParam.getReceiverProvince());
+        order.setReceiverRegion(receiverInfoParam.getReceiverRegion());
+        order.setReceiverDetailAddress(receiverInfoParam.getReceiverDetailAddress());
+        order.setModifyTime(new Date());
+        int count = omsOrderMapper.updateByPrimaryKeySelective(order);
+        //插入操作记录
+        OmsOrderOperateHistory history = new OmsOrderOperateHistory();
+        history.setOrderId(receiverInfoParam.getOrderId());
+        history.setCreateTime(new Date());
+        history.setOperateMan("后台管理员");
+        history.setOrderStatus(receiverInfoParam.getStatus());
+        history.setNote("修改收货人信息");
+        omsOrderOperateHistoryMapper.insert(history);
+        return count;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+    public int updateMoneyInfo(OmsMoneyInfoParam omsMoneyInfoParam) {
+        OmsOrder order = new OmsOrder();
+        order.setId(omsMoneyInfoParam.getOrderId());
+        order.setFreightAmount(omsMoneyInfoParam.getFreightAmount());
+        order.setDiscountAmount(omsMoneyInfoParam.getDiscountAmount());
+        order.setModifyTime(new Date());
+        omsOrderMapper.updateByPrimaryKeySelective(order);
+        //插入操作记录
+        OmsOrderOperateHistory history = new OmsOrderOperateHistory();
+        history.setOrderId(omsMoneyInfoParam.getOrderId());
+        history.setCreateTime(new Date());
+        history.setOperateMan("后台管理员");
+        history.setOrderStatus(omsMoneyInfoParam.getStatus());
+        history.setNote("修改费用信息");
+        omsOrderOperateHistoryMapper.insert(history);
+        return 0;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+    public int updateNote(Long id, String note, Integer status) {
+        OmsOrder order = new OmsOrder();
+        order.setId(id);
+        order.setNote(note);
+        order.setModifyTime(new Date());
+        int count = omsOrderMapper.updateByPrimaryKeySelective(order);
+        OmsOrderOperateHistory history = new OmsOrderOperateHistory();
+        history.setOrderId(id);
+        history.setCreateTime(new Date());
+        history.setOperateMan("后台管理员");
+        history.setOrderStatus(status);
+        history.setNote("修改备注信息："+note);
+        omsOrderOperateHistoryMapper.insert(history);
+        return count;
     }
 }

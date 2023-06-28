@@ -1,6 +1,7 @@
 package com.macro.mall.dao;
 
 import com.macro.mall.dto.OmsOrderDeliveryParam;
+import com.macro.mall.dto.OmsOrderDetail;
 import com.macro.mall.dto.OmsOrderQueryParam;
 import com.macro.mall.model.OmsOrder;
 import org.apache.ibatis.annotations.Param;
@@ -23,4 +24,6 @@ public interface OmsOrderDao {
 
     int delivery(@Param("list") List<OmsOrderDeliveryParam> deliveryParamList);
 
+
+    OmsOrderDetail detail(@Param("id") Long id);
 }

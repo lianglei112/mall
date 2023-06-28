@@ -1,7 +1,6 @@
 package com.macro.mall.service;
 
-import com.macro.mall.dto.OmsOrderDeliveryParam;
-import com.macro.mall.dto.OmsOrderQueryParam;
+import com.macro.mall.dto.*;
 import com.macro.mall.model.OmsOrder;
 
 import java.util.List;
@@ -21,5 +20,13 @@ public interface OmsOrderService {
     int close(List<Long> ids, String note);
 
     int delete(List<Long> ids);
+
+    OmsOrderDetail detail(Long id);
+
+    int updateReceiverInfo(OmsReceiverInfoParam receiverInfoParam);
+
+    int updateMoneyInfo(OmsMoneyInfoParam omsMoneyInfoParam);
+
+    int updateNote(Long id, String note, Integer status);
 
 }

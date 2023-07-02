@@ -1,5 +1,7 @@
 package com.macro.mall.portal.service;
 
+import com.macro.mall.model.OmsCartItem;
+
 /**
  * @author lianglei
  * @version 1.0
@@ -7,5 +9,7 @@ package com.macro.mall.portal.service;
  * @deprecated 购物车管理service层
  */
 public interface OmsCartItemService {
+
+    int add(OmsCartItem omsCartItem);
 
 }

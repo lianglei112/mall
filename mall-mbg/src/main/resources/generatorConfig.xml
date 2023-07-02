@@ -173,36 +173,78 @@
         <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--        </table>-->
 
-        <!--    订单相关表结构生成    -->
-        <table tableName="oms_cart_item">
+        <!--        &lt;!&ndash;    订单相关表结构生成    &ndash;&gt;-->
+        <!--        <table tableName="oms_cart_item">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="oms_company_address">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="oms_order">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="oms_order_item">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="oms_order_operate_history">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="oms_order_return_apply">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="oms_order_return_reason">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="oms_order_setting">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+
+        <!--  用户相关表结构生成   -->
+        <table tableName="ums_member">
             <!-- 用来指定主键生成策略 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="oms_company_address">
+        <table tableName="ums_member_level">
             <!-- 用来指定主键生成策略 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="oms_order">
+        <table tableName="ums_member_login_log">
             <!-- 用来指定主键生成策略 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="oms_order_item">
+        <table tableName="ums_member_member_tag_relation">
             <!-- 用来指定主键生成策略 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="oms_order_operate_history">
+        <table tableName="ums_member_product_category_relation">
             <!-- 用来指定主键生成策略 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="oms_order_return_apply">
+        <table tableName="ums_member_receive_address">
             <!-- 用来指定主键生成策略 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="oms_order_return_reason">
+        <table tableName="ums_member_rule_setting">
             <!-- 用来指定主键生成策略 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="oms_order_setting">
+        <table tableName="ums_member_statistics_info">
+            <!-- 用来指定主键生成策略 -->
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="ums_member_tag">
+            <!-- 用来指定主键生成策略 -->
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="ums_member_task">
             <!-- 用来指定主键生成策略 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>

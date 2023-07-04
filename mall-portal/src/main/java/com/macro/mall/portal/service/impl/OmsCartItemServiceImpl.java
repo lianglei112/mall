@@ -9,6 +9,7 @@ import com.macro.mall.portal.dao.PortalProductDao;
 import com.macro.mall.portal.domain.CartProduct;
 import com.macro.mall.portal.domain.CartPromotionItem;
 import com.macro.mall.portal.service.OmsCartItemService;
+import com.macro.mall.portal.service.OmsPromotionService;
 import com.macro.mall.portal.service.UmsMemberService;
 import io.jsonwebtoken.lang.Collections;
 import lombok.extern.slf4j.Slf4j;
@@ -19,10 +20,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author lianglei
@@ -44,6 +48,9 @@ public class OmsCartItemServiceImpl implements OmsCartItemService {
 
     @Autowired
     private PortalProductDao portalProductDao;
+
+    @Autowired
+    private OmsPromotionService promotionService;
 
     @Override
     @Transactional(rollbackFor = Exception.class, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
@@ -86,12 +93,17 @@ public class OmsCartItemServiceImpl implements OmsCartItemService {
 
     //TODO 待完成 购物车当中商品车促销信息
     @Override
-    public List<CartPromotionItem> listPromotion(Long id, List<Long> cartIds) {
-        List<OmsCartItem> cartItemList = list(id);
+    public List<CartPromotionItem> listPromotion(Long memberId, List<Long> cartIds) {
+        List<OmsCartItem> cartItemList = list(memberId);
         if (CollUtil.isNotEmpty(cartIds)) {
-
+            //查询前端传递过来的商品信息
+            cartItemList = cartItemList.stream().filter(item -> cartIds.contains(item.getId())).collect(Collectors.toList());
         }
-        return null;
+        List<CartPromotionItem> cartPromotionItemList = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(cartItemList)) {
+            cartPromotionItemList = promotionService.calcCartPromotion(cartItemList);
+        }
+        return cartPromotionItemList;
     }
 
     @Override

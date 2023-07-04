@@ -20,7 +20,7 @@ public interface OmsCartItemService {
 
     List<OmsCartItem> list(Long id);
 
-    List<CartPromotionItem> listPromotion(Long id, List<Long> cartIds);
+    List<CartPromotionItem> listPromotion(Long memberId, List<Long> cartIds);
 
     int updateQuantity(Long id, Long memberId, Integer quantity);
 

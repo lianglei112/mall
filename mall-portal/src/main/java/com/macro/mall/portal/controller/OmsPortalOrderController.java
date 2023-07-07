@@ -11,10 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author lianglei
@@ -35,10 +34,17 @@ public class OmsPortalOrderController {
     @Autowired
     private OmsPortalOrderService omsPortalOrderService;
 
+    /**
+     * 根据购物车信息生成确认单
+     *
+     * @param cartIds
+     * @return
+     */
     @ApiOperation("根据购物车信息生成确认单")
     @RequestMapping(value = "/generateConfirmOrder", method = RequestMethod.POST)
     @ResponseBody
-    public CommonResult<ConfirmOrderResult> generateConfirmOrder() {
-        return CommonResult.success();
+    public CommonResult<ConfirmOrderResult> generateConfirmOrder(@RequestBody List<Long> cartIds) {
+        ConfirmOrderResult confirmOrderResult = omsPortalOrderService.generateConfirmOrder(cartIds);
+        return CommonResult.success(confirmOrderResult);
     }
 }

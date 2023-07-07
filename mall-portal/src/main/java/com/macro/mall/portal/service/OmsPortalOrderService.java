@@ -1,5 +1,9 @@
 package com.macro.mall.portal.service;
 
+import com.macro.mall.portal.domain.ConfirmOrderResult;
+
+import java.util.List;
+
 /**
  * @author lianglei
  * @version 1.0
@@ -7,5 +11,7 @@ package com.macro.mall.portal.service;
  * @deprecated 订单管理service层
  */
 public interface OmsPortalOrderService {
+
+    ConfirmOrderResult generateConfirmOrder(List<Long> cartIds);
 
 }

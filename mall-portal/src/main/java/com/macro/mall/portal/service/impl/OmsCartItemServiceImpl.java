@@ -91,7 +91,6 @@ public class OmsCartItemServiceImpl implements OmsCartItemService {
         return omsCartItemMapper.selectByExample(example);
     }
 
-    //TODO 待完成 购物车当中商品车促销信息
     @Override
     public List<CartPromotionItem> listPromotion(Long memberId, List<Long> cartIds) {
         List<OmsCartItem> cartItemList = list(memberId);

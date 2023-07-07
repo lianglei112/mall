@@ -207,44 +207,66 @@
         <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--        </table>-->
 
-        <!--  用户相关表结构生成   -->
-        <table tableName="ums_member">
+        <!--        &lt;!&ndash;  用户相关表结构生成   &ndash;&gt;-->
+        <!--        <table tableName="ums_member">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="ums_member_level">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="ums_member_login_log">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="ums_member_member_tag_relation">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="ums_member_product_category_relation">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="ums_member_receive_address">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="ums_member_rule_setting">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="ums_member_statistics_info">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="ums_member_tag">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="ums_member_task">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+
+        <!--  营销模块相关表结构生成  -->
+        <table tableName="sms_coupon">
             <!-- 用来指定主键生成策略 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="ums_member_level">
+        <table tableName="sms_coupon_history">
             <!-- 用来指定主键生成策略 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="ums_member_login_log">
+        <table tableName="sms_coupon_product_category_relation">
             <!-- 用来指定主键生成策略 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="ums_member_member_tag_relation">
+        <table tableName="sms_coupon_product_relation">
             <!-- 用来指定主键生成策略 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="ums_member_product_category_relation">
-            <!-- 用来指定主键生成策略 -->
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="ums_member_receive_address">
-            <!-- 用来指定主键生成策略 -->
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="ums_member_rule_setting">
-            <!-- 用来指定主键生成策略 -->
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="ums_member_statistics_info">
-            <!-- 用来指定主键生成策略 -->
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="ums_member_tag">
-            <!-- 用来指定主键生成策略 -->
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="ums_member_task">
+        <table tableName="ums_integration_consume_setting">
             <!-- 用来指定主键生成策略 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>

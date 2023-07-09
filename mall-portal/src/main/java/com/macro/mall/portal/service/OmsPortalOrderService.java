@@ -1,8 +1,10 @@
 package com.macro.mall.portal.service;
 
 import com.macro.mall.portal.domain.ConfirmOrderResult;
+import com.macro.mall.portal.domain.OrderParam;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author lianglei
@@ -14,4 +16,5 @@ public interface OmsPortalOrderService {
 
     ConfirmOrderResult generateConfirmOrder(List<Long> cartIds);
 
+    Map<String, Object> generateOrder(OrderParam orderParam);
 }

@@ -2,6 +2,7 @@ package com.macro.mall.portal.controller;
 
 import com.macro.mall.common.api.CommonResult;
 import com.macro.mall.portal.domain.ConfirmOrderResult;
+import com.macro.mall.portal.domain.OrderParam;
 import com.macro.mall.portal.service.OmsPortalOrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author lianglei
@@ -47,4 +49,20 @@ public class OmsPortalOrderController {
         ConfirmOrderResult confirmOrderResult = omsPortalOrderService.generateConfirmOrder(cartIds);
         return CommonResult.success(confirmOrderResult);
     }
+
+
+    /**
+     * 根据购物车信息生成订单
+     *
+     * @param orderParam
+     * @return
+     */
+    @ApiOperation("根据购物车信息生成订单")
+    @RequestMapping(value = "/generateOrder", method = RequestMethod.POST)
+    @ResponseBody
+    public CommonResult generateOrder(@RequestBody OrderParam orderParam) {
+        Map<String, Object> result = omsPortalOrderService.generateOrder(orderParam);
+        return CommonResult.success(result, "下单成功！");
+    }
+
 }

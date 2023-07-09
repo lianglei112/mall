@@ -88,6 +88,7 @@ public class UmsMemberCouponServiceImpl implements UmsMemberCouponService {
                 }
             }
         }
+        //根据传递的参数来判断用户是否使用可用优惠券还是不可用优惠券
         if (type.equals(1)) {
             return enableList;
         } else {

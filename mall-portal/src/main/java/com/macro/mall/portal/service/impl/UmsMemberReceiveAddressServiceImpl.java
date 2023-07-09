@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -38,5 +39,17 @@ public class UmsMemberReceiveAddressServiceImpl implements UmsMemberReceiveAddre
         UmsMemberReceiveAddressExample example = new UmsMemberReceiveAddressExample();
         example.createCriteria().andMemberIdEqualTo(currentMember.getId());
         return umsMemberReceiveAddressMapper.selectByExample(example);
+    }
+
+    @Override
+    public UmsMemberReceiveAddress getItem(Long memberReceiveAddressId) {
+        UmsMember currentMember = umsMemberService.getCurrentMember();
+        UmsMemberReceiveAddressExample example = new UmsMemberReceiveAddressExample();
+        example.createCriteria().andMemberIdEqualTo(currentMember.getId()).andIdEqualTo(memberReceiveAddressId);
+        List<UmsMemberReceiveAddress> addressList = umsMemberReceiveAddressMapper.selectByExample(example);
+        if (!CollectionUtils.isEmpty(addressList)) {
+            return addressList.get(0);
+        }
+        return null;
     }
 }

@@ -36,4 +36,12 @@ public class UmsMemberServiceImpl implements UmsMemberService {
         MemberDetails memberDetails = (MemberDetails) auth.getPrincipal();
         return memberDetails.getUmsMember();
     }
+
+    @Override
+    public void updateIntegration(Long id, int integration) {
+        UmsMember record = new UmsMember();
+        record.setId(id);
+        record.setIntegration(integration);
+        umsMemberMapper.updateByPrimaryKeySelective(record);
+    }
 }

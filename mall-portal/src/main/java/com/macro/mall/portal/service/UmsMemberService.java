@@ -17,4 +17,6 @@ public interface UmsMemberService {
      */
     UmsMember getCurrentMember();
 
+
+    void updateIntegration(Long id, int integration);
 }

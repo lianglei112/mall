@@ -13,4 +13,7 @@ import java.util.List;
 public interface UmsMemberReceiveAddressService {
 
     List<UmsMemberReceiveAddress> list();
+
+    UmsMemberReceiveAddress getItem(Long memberReceiveAddressId);
+
 }

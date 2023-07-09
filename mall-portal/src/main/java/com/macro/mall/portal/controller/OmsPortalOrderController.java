@@ -65,4 +65,32 @@ public class OmsPortalOrderController {
         return CommonResult.success(result, "下单成功！");
     }
 
+    /**
+     * 用户取消订单
+     *
+     * @param orderId
+     * @return
+     */
+    @ApiOperation("用户取消订单")
+    @RequestMapping(value = "/cancelUserOrder", method = RequestMethod.POST)
+    @ResponseBody
+    public CommonResult cancelUserOrder(Long orderId) {
+        omsPortalOrderService.cancelOrder(orderId);
+        return CommonResult.success(null);
+    }
+
+    /**
+     * 用户支付成功的回调
+     *
+     * @param orderId
+     * @param payType
+     * @return
+     */
+    @ApiOperation("用户支付成功的回调")
+    @RequestMapping(value = "/paySuccess", method = RequestMethod.POST)
+    @ResponseBody
+    public CommonResult paySuccess(@RequestParam Long orderId, @RequestParam Integer payType) {
+        Integer count = omsPortalOrderService.paySuccess(orderId, payType);
+        return CommonResult.success(count, "支付成功！");
+    }
 }

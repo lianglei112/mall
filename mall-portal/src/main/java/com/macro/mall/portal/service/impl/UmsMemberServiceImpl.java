@@ -2,6 +2,7 @@ package com.macro.mall.portal.service.impl;
 
 import com.macro.mall.mapper.UmsMemberMapper;
 import com.macro.mall.model.UmsMember;
+import com.macro.mall.model.UmsMemberExample;
 import com.macro.mall.portal.domain.MemberDetails;
 import com.macro.mall.portal.service.UmsMemberService;
 import lombok.extern.slf4j.Slf4j;
@@ -43,5 +44,10 @@ public class UmsMemberServiceImpl implements UmsMemberService {
         record.setId(id);
         record.setIntegration(integration);
         umsMemberMapper.updateByPrimaryKeySelective(record);
+    }
+
+    @Override
+    public UmsMember getById(Long memberId) {
+        return umsMemberMapper.selectByPrimaryKey(memberId);
     }
 }

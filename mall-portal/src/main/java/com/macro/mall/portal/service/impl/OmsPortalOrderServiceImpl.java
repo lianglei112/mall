@@ -4,11 +4,10 @@ import com.macro.mall.common.exception.Asserts;
 import com.macro.mall.common.service.RedisService;
 import com.macro.mall.mapper.*;
 import com.macro.mall.model.*;
+import com.macro.mall.portal.component.CancelOrderSender;
 import com.macro.mall.portal.dao.OmsOrderItemDao;
-import com.macro.mall.portal.domain.CartPromotionItem;
-import com.macro.mall.portal.domain.ConfirmOrderResult;
-import com.macro.mall.portal.domain.OrderParam;
-import com.macro.mall.portal.domain.SmsCouponHistoryDetail;
+import com.macro.mall.portal.dao.PortalOrderDao;
+import com.macro.mall.portal.domain.*;
 import com.macro.mall.portal.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -80,10 +79,15 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
     @Autowired
     private SmsCouponHistoryMapper smsCouponHistoryMapper;
 
+    @Autowired
+    private CancelOrderSender cancelOrderSender;
+
+    @Autowired
+    private PortalOrderDao portalOrderDao;
+
 
     //TODO 优惠券相关代码需要重新编写
     @Override
-
     public ConfirmOrderResult generateConfirmOrder(List<Long> cartIds) {
         ConfirmOrderResult result = new ConfirmOrderResult();
         // 1、获取购物车信息
@@ -260,6 +264,54 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
         return result;
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+    public void cancelOrder(Long orderId) {
+        //1、根据订单id获取到订单（订单是待付款且未删除）
+        OmsOrderExample example = new OmsOrderExample();
+        example.createCriteria().andIdEqualTo(orderId).andDeleteStatusEqualTo(0).andStatusEqualTo(0);
+        List<OmsOrder> cancelOrderList = omsOrderMapper.selectByExample(example);
+        if (!CollectionUtils.isEmpty(cancelOrderList)) {
+            return;
+        }
+        OmsOrder cancelOrder = cancelOrderList.get(0);
+        if (cancelOrder != null) {
+            //2、修改订单状态为取消状态
+            cancelOrder.setStatus(4);
+            omsOrderMapper.updateByPrimaryKeySelective(cancelOrder);
+            OmsOrderItemExample orderItemExample = new OmsOrderItemExample();
+            orderItemExample.createCriteria().andOrderIdEqualTo(orderId);
+            List<OmsOrderItem> orderItemList = omsOrderItemMapper.selectByExample(orderItemExample);
+            //3、解除订单中商品的锁定库存
+            if (!CollectionUtils.isEmpty(orderItemList)) {
+                portalOrderDao.releaseSkuStockLock(orderItemList);
+            }
+            //4、修改优惠券使用状态
+            updateCouponStatus(cancelOrder.getCouponId(), cancelOrder.getMemberId(), 0);
+            //5、返还使用积分
+            if (cancelOrder.getUseIntegration() != null) {
+                UmsMember member = umsMemberService.getById(cancelOrder.getMemberId());
+                umsMemberService.updateIntegration(cancelOrder.getMemberId(), member.getIntegration() + cancelOrder.getUseIntegration());
+            }
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+    public Integer paySuccess(Long orderId, Integer payType) {
+        //修改订单支付状态
+        OmsOrder order = new OmsOrder();
+        order.setId(orderId);
+        order.setStatus(1);
+        order.setPayType(payType);
+        order.setPaymentTime(new Date());
+        omsOrderMapper.updateByPrimaryKeySelective(order);
+        //恢复所有下单商品的锁定库存，扣减真实库存
+        OmsOrderDetail orderDetail = portalOrderDao.getDetail(orderId);
+        int count = portalOrderDao.updateSkuStock(orderDetail.getOrderItemList());
+        return count;
+    }
+
     /**
      * 发送延迟消息取消订单
      *
@@ -269,8 +321,7 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
         //获取订单超时时间
         OmsOrderSetting orderSetting = omsOrderSettingMapper.selectByPrimaryKey(1L);
         long delayTimes = orderSetting.getNormalOrderOvertime() * 60 * 1000;
-        //TODO 发送延迟消息，需要集成 rabbitMQ
-//        cancelOrderSender.sendMessage(orderId, delayTimes);
+        cancelOrderSender.sendMessage(orderId, delayTimes);
     }
 
     /**

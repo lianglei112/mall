@@ -17,4 +17,9 @@ public interface OmsPortalOrderService {
     ConfirmOrderResult generateConfirmOrder(List<Long> cartIds);
 
     Map<String, Object> generateOrder(OrderParam orderParam);
+
+    void cancelOrder(Long orderId);
+
+    Integer paySuccess(Long orderId, Integer payType);
+
 }

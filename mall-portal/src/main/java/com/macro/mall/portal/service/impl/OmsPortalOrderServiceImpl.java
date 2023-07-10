@@ -12,6 +12,7 @@ import com.macro.mall.portal.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -312,16 +313,92 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
         return count;
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+    public Integer cancelTimeOutOrder() {
+        Integer count = 0;
+        OmsOrderSetting orderSetting = omsOrderSettingMapper.selectByPrimaryKey(1L);
+        //查询超时、未支付的订单及订单详情
+        List<OmsOrderDetail> timeOutOrders = portalOrderDao.getTimeOutOrders(orderSetting.getNormalOrderOvertime());
+        if (!CollectionUtils.isEmpty(timeOutOrders)) {
+            return count;
+        }
+        //修改订单状态为交易取消
+        List<Long> ids = new ArrayList<>();
+        for (OmsOrderDetail timeOutOrder : timeOutOrders) {
+            ids.add(timeOutOrder.getId());
+        }
+        portalOrderDao.updateOrderStatus(ids, 4);
+        for (OmsOrderDetail timeOutOrder : timeOutOrders) {
+            //解锁订单商品库存锁定
+            portalOrderDao.releaseSkuStockLock(timeOutOrder.getOrderItemList());
+            //修改优惠券使用状态
+            updateCouponStatus(timeOutOrder.getCouponId(), timeOutOrder.getMemberId(), 0);
+            //返还使用积分
+            if (timeOutOrder.getUseIntegration() != null) {
+                UmsMember member = umsMemberService.getById(timeOutOrder.getMemberId());
+                umsMemberService.updateIntegration(timeOutOrder.getMemberId(), member.getIntegration() + timeOutOrder.getUseIntegration());
+            }
+        }
+        return timeOutOrders.size();
+    }
+
     /**
      * 发送延迟消息取消订单
      *
      * @param orderId
      */
-    private void sendDelayMessageCancelOrder(Long orderId) {
+    @Override
+    public void sendDelayMessageCancelOrder(Long orderId) {
         //获取订单超时时间
         OmsOrderSetting orderSetting = omsOrderSettingMapper.selectByPrimaryKey(1L);
         long delayTimes = orderSetting.getNormalOrderOvertime() * 60 * 1000;
+        //发送延迟消息
         cancelOrderSender.sendMessage(orderId, delayTimes);
+    }
+
+    @Override
+    public OmsOrderDetail detail(Long orderId) {
+//        return portalOrderDao.getDetail(orderId);
+        OmsOrder omsOrder = omsOrderMapper.selectByPrimaryKey(orderId);
+        OmsOrderItemExample example = new OmsOrderItemExample();
+        example.createCriteria().andOrderIdEqualTo(orderId);
+        List<OmsOrderItem> orderItemList = omsOrderItemMapper.selectByExample(example);
+        OmsOrderDetail orderDetail = new OmsOrderDetail();
+        BeanUtils.copyProperties(omsOrder, orderDetail);
+        orderDetail.setOrderItemList(orderItemList);
+        return orderDetail;
+    }
+
+    @Override
+    public void confirmReceiveOrder(Long orderId) {
+        UmsMember member = umsMemberService.getCurrentMember();
+        final OmsOrder order = omsOrderMapper.selectByPrimaryKey(orderId);
+        if (!member.getId().equals(order.getMemberId())) {
+            Asserts.fail("不能确认他人订单！");
+        }
+        if (order.getStatus() != 2) {
+            Asserts.fail("该订单还未发货！");
+        }
+        order.setStatus(3);
+        order.setConfirmStatus(1);
+        order.setReceiveTime(new Date());
+        omsOrderMapper.updateByPrimaryKeySelective(order);
+    }
+
+    @Override
+    public void deleteOrder(Long orderId) {
+        UmsMember member = umsMemberService.getCurrentMember();
+        OmsOrder order = omsOrderMapper.selectByPrimaryKey(orderId);
+        if (!member.getId().equals(order.getMemberId())) {
+            Asserts.fail("不能删除他人订单！");
+        }
+        if (order.getStatus() == 3 || order.getStatus() == 4) {
+            order.setStatus(1);
+            omsOrderMapper.updateByPrimaryKey(order);
+        } else {
+            Asserts.fail("只能删除已完成或已关闭的订单！");
+        }
     }
 
     /**

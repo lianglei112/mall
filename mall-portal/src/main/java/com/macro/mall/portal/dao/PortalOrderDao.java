@@ -23,4 +23,7 @@ public interface PortalOrderDao {
 
     int updateSkuStock(@Param("itemList") List<OmsOrderItem> orderItemList);
 
+    List<OmsOrderDetail> getTimeOutOrders(@Param("minute") Integer minute);
+
+    int updateOrderStatus(@Param("ids") List<Long> ids,@Param("status") Integer status);
 }

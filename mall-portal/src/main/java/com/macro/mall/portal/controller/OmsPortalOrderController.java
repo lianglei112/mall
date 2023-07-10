@@ -2,6 +2,7 @@ package com.macro.mall.portal.controller;
 
 import com.macro.mall.common.api.CommonResult;
 import com.macro.mall.portal.domain.ConfirmOrderResult;
+import com.macro.mall.portal.domain.OmsOrderDetail;
 import com.macro.mall.portal.domain.OrderParam;
 import com.macro.mall.portal.service.OmsPortalOrderService;
 import io.swagger.annotations.Api;
@@ -93,4 +94,74 @@ public class OmsPortalOrderController {
         Integer count = omsPortalOrderService.paySuccess(orderId, payType);
         return CommonResult.success(count, "支付成功！");
     }
+
+    /**
+     * 自动取消超时订单
+     *
+     * @return
+     */
+    @ApiOperation("自动取消超时订单")
+    @RequestMapping(value = "/cancelTimeOutOrder", method = RequestMethod.POST)
+    @ResponseBody
+    public CommonResult cancelTimeOutOrder() {
+        omsPortalOrderService.cancelTimeOutOrder();
+        return CommonResult.success(null);
+    }
+
+    /**
+     * 取消单个超时订单
+     *
+     * @param orderId
+     * @return
+     */
+    @ApiOperation("取消单个超时订单")
+    @RequestMapping(value = "/cancelOrder", method = RequestMethod.POST)
+    @ResponseBody
+    public CommonResult cancelOrder(Long orderId) {
+        omsPortalOrderService.sendDelayMessageCancelOrder(orderId);
+        return CommonResult.success(null);
+    }
+
+    /**
+     * 根据订单id获取订单详情
+     *
+     * @param orderId
+     * @return
+     */
+    @ApiOperation("根据订单id获取订单详情")
+    @RequestMapping(value = "/detail/{orderId}", method = RequestMethod.POST)
+    @ResponseBody
+    public CommonResult<OmsOrderDetail> detail(@PathVariable Long orderId) {
+        OmsOrderDetail orderDetail = omsPortalOrderService.detail(orderId);
+        return CommonResult.success(orderDetail);
+    }
+
+    /**
+     * 用户确认收货
+     *
+     * @param orderId
+     * @return
+     */
+    @ApiOperation("用户确认收货")
+    @RequestMapping(value = "/confirmReceiveOrder", method = RequestMethod.POST)
+    @ResponseBody
+    public CommonResult confirmReceiveOrder(@RequestParam Long orderId) {
+        omsPortalOrderService.confirmReceiveOrder(orderId);
+        return CommonResult.success(null);
+    }
+
+    /**
+     * 用户删除订单
+     *
+     * @param orderId
+     * @return
+     */
+    @ApiOperation("用户删除订单")
+    @RequestMapping(value = "/deleteOrder", method = RequestMethod.POST)
+    @ResponseBody
+    public CommonResult deleteOrder(@RequestParam Long orderId) {
+        omsPortalOrderService.deleteOrder(orderId);
+        return CommonResult.success(null);
+    }
+
 }

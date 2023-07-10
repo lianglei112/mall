@@ -1,6 +1,7 @@
 package com.macro.mall.portal.service;
 
 import com.macro.mall.portal.domain.ConfirmOrderResult;
+import com.macro.mall.portal.domain.OmsOrderDetail;
 import com.macro.mall.portal.domain.OrderParam;
 
 import java.util.List;
@@ -22,4 +23,18 @@ public interface OmsPortalOrderService {
 
     Integer paySuccess(Long orderId, Integer payType);
 
+    Integer cancelTimeOutOrder();
+
+    /**
+     * 发送延迟消息取消订单
+     *
+     * @param orderId
+     */
+    void sendDelayMessageCancelOrder(Long orderId);
+
+    OmsOrderDetail detail(Long orderId);
+
+    void confirmReceiveOrder(Long orderId);
+
+    void deleteOrder(Long orderId);
 }

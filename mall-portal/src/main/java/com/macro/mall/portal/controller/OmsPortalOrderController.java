@@ -1,11 +1,13 @@
 package com.macro.mall.portal.controller;
 
+import com.macro.mall.common.api.CommonPage;
 import com.macro.mall.common.api.CommonResult;
 import com.macro.mall.portal.domain.ConfirmOrderResult;
 import com.macro.mall.portal.domain.OmsOrderDetail;
 import com.macro.mall.portal.domain.OrderParam;
 import com.macro.mall.portal.service.OmsPortalOrderService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -162,6 +164,26 @@ public class OmsPortalOrderController {
     public CommonResult deleteOrder(@RequestParam Long orderId) {
         omsPortalOrderService.deleteOrder(orderId);
         return CommonResult.success(null);
+    }
+
+    /**
+     * 按照状态分页获取用户订单列表
+     *
+     * @param status
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @ApiOperation("按状态分页获取用户订单列表")
+    @ApiImplicitParam(name = "status", value = "订单状态：-1->全部；0->待付款；1->待发货；2->已发货；3->已完成；4->已关闭",
+            defaultValue = "-1", allowableValues = "-1,0,1,2,3,4", paramType = "query", dataType = "int")
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @ResponseBody
+    public CommonResult<CommonPage<OmsOrderDetail>> list(@RequestParam(name = "status") Integer status,
+                                                         @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+                                                         @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize) {
+        CommonPage<OmsOrderDetail> detailCommonPage = omsPortalOrderService.list(status, pageNum, pageSize);
+        return CommonResult.success(detailCommonPage);
     }
 
 }

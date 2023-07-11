@@ -1,5 +1,6 @@
 package com.macro.mall.portal.service;
 
+import com.macro.mall.common.api.CommonPage;
 import com.macro.mall.portal.domain.ConfirmOrderResult;
 import com.macro.mall.portal.domain.OmsOrderDetail;
 import com.macro.mall.portal.domain.OrderParam;
@@ -37,4 +38,7 @@ public interface OmsPortalOrderService {
     void confirmReceiveOrder(Long orderId);
 
     void deleteOrder(Long orderId);
+
+    CommonPage<OmsOrderDetail> list(Integer status, Integer pageNum, Integer pageSize);
+
 }

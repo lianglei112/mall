@@ -1,5 +1,8 @@
 package com.macro.mall.portal.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
+import com.github.pagehelper.PageHelper;
+import com.macro.mall.common.api.CommonPage;
 import com.macro.mall.common.exception.Asserts;
 import com.macro.mall.common.service.RedisService;
 import com.macro.mall.mapper.*;
@@ -25,6 +28,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author lianglei
@@ -399,6 +403,49 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
         } else {
             Asserts.fail("只能删除已完成或已关闭的订单！");
         }
+    }
+
+    @Override
+    public CommonPage<OmsOrderDetail> list(Integer status, Integer pageNum, Integer pageSize) {
+        if (status == -1) {
+            status = null;
+        }
+        UmsMember currentMember = umsMemberService.getCurrentMember();
+        PageHelper.startPage(pageNum, pageSize);
+        OmsOrderExample orderExample = new OmsOrderExample();
+        final OmsOrderExample.Criteria orderExampleCriteria = orderExample.createCriteria();
+        orderExampleCriteria.andDeleteStatusEqualTo(0)
+                .andMemberIdEqualTo(currentMember.getId());
+        if (status != null) {
+            orderExampleCriteria.andStatusEqualTo(status);
+        }
+        orderExample.setOrderByClause("create_time desc");
+        List<OmsOrder> omsOrderList = omsOrderMapper.selectByExample(orderExample);
+        CommonPage<OmsOrder> orderPage = CommonPage.restPage(omsOrderList);
+        //设置分页信息
+        CommonPage<OmsOrderDetail> resultPage = new CommonPage<>();
+        resultPage.setPageNum(orderPage.getPageNum());
+        resultPage.setPageSize(orderPage.getPageSize());
+        resultPage.setTotal(orderPage.getTotal());
+        resultPage.setTotalPage(orderPage.getTotalPage());
+        if (CollUtil.isEmpty(omsOrderList)) {
+            return resultPage;
+        }
+        //设置数据信息
+        List<Long> orderIds = omsOrderList.stream().map(OmsOrder::getId).collect(Collectors.toList());
+        OmsOrderItemExample orderItemExample = new OmsOrderItemExample();
+        orderItemExample.createCriteria().andOrderIdIn(orderIds);
+        List<OmsOrderItem> orderItemList = omsOrderItemMapper.selectByExample(orderItemExample);
+        List<OmsOrderDetail> omsOrderDetailList = new ArrayList<>();
+        for (OmsOrder omsOrder : omsOrderList) {
+            OmsOrderDetail orderDetail = new OmsOrderDetail();
+            BeanUtils.copyProperties(omsOrder, orderDetail);
+            List<OmsOrderItem> relatedItemList = orderItemList.stream().filter(item -> item.getOrderId().equals(orderDetail.getId())).collect(Collectors.toList());
+            orderDetail.setOrderItemList(relatedItemList);
+            omsOrderDetailList.add(orderDetail);
+        }
+        resultPage.setList(omsOrderDetailList);
+        return resultPage;
     }
 
     /**

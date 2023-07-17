@@ -1,8 +1,9 @@
 package com.macro.mall.portal.service.impl;
 
-import com.macro.mall.model.SmsCouponProductCategoryRelation;
-import com.macro.mall.model.SmsCouponProductRelation;
-import com.macro.mall.model.UmsMember;
+import com.macro.mall.common.exception.Asserts;
+import com.macro.mall.mapper.SmsCouponHistoryMapper;
+import com.macro.mall.mapper.SmsCouponMapper;
+import com.macro.mall.model.*;
 import com.macro.mall.portal.dao.SmsCouponHistoryDao;
 import com.macro.mall.portal.domain.CartPromotionItem;
 import com.macro.mall.portal.domain.SmsCouponHistoryDetail;
@@ -13,11 +14,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author lianglei
@@ -36,6 +41,12 @@ public class UmsMemberCouponServiceImpl implements UmsMemberCouponService {
 
     @Autowired
     private SmsCouponHistoryDao smsCouponHistoryDao;
+
+    @Autowired
+    private SmsCouponMapper smsCouponMapper;
+
+    @Autowired
+    private SmsCouponHistoryMapper smsCouponHistoryMapper;
 
     @Override
     public List<SmsCouponHistoryDetail> listCart(List<CartPromotionItem> cartPromotionItemList, Integer type) {
@@ -96,6 +107,82 @@ public class UmsMemberCouponServiceImpl implements UmsMemberCouponService {
         }
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
+    public void add(Long couponId) {
+        UmsMember currentMember = umsMemberService.getCurrentMember();
+        //获取优惠券信息，判断数量
+        SmsCoupon smsCoupon = smsCouponMapper.selectByPrimaryKey(couponId);
+        if (smsCoupon == null) {
+            Asserts.fail("优惠券不存在！");
+        }
+        if (smsCoupon.getCount() <= 0) {
+            Asserts.fail("优惠券已经领取完了！");
+        }
+        Date now = new Date();
+        if (now.before(smsCoupon.getEnableTime())) {
+            Asserts.fail("优惠券还没到领取时间！");
+        }
+        //判断用户领取的优惠券数量是否超过限制
+        SmsCouponHistoryExample historyExample = new SmsCouponHistoryExample();
+        historyExample.createCriteria().andCouponIdEqualTo(couponId).andMemberIdEqualTo(currentMember.getId());
+        long count = smsCouponHistoryMapper.countByExample(historyExample);
+        if (count >= smsCoupon.getPerLimit()) {
+            Asserts.fail("您已经领取过该优惠券了！");
+        }
+        //生成领取优惠券历史
+        SmsCouponHistory couponHistory = new SmsCouponHistory();
+        couponHistory.setCouponId(couponId);
+        couponHistory.setMemberId(currentMember.getId());
+        couponHistory.setMemberNickname(currentMember.getNickname());
+        couponHistory.setCreateTime(new Date());
+        couponHistory.setCouponCode(generateCouponCode(currentMember.getId()));
+        //主动领取
+        couponHistory.setGetType(1);
+        //未使用
+        couponHistory.setUseStatus(0);
+        smsCouponHistoryMapper.insert(couponHistory);
+        //修改优惠券表的数量、领取数量
+        smsCoupon.setCount(smsCoupon.getCount() - 1);
+        smsCoupon.setReceiveCount(smsCoupon.getReceiveCount() == null ? 1 : smsCoupon.getReceiveCount() + 1);
+        smsCouponMapper.updateByPrimaryKey(smsCoupon);
+    }
+
+    @Override
+    public List<SmsCouponHistory> listHistory(Integer useStatus) {
+        UmsMember currentMember = umsMemberService.getCurrentMember();
+        SmsCouponHistoryExample example = new SmsCouponHistoryExample();
+        SmsCouponHistoryExample.Criteria criteria = example.createCriteria();
+        criteria.andMemberIdEqualTo(currentMember.getId());
+        if (useStatus != null) {
+            criteria.andUseStatusEqualTo(useStatus);
+        }
+        return smsCouponHistoryMapper.selectByExample(example);
+    }
+
+    /**
+     * 生成coupon_code码
+     *
+     * @param memberId
+     * @return
+     */
+    private String generateCouponCode(Long memberId) {
+        StringBuilder sb = new StringBuilder();
+        Long currentTimeMillis = System.currentTimeMillis();
+        String timeMillisStr = currentTimeMillis.toString();
+        sb.append(timeMillisStr.substring(timeMillisStr.length() - 8));
+        for (int i = 0; i < 4; i++) {
+            sb.append(new Random().nextInt(10));
+        }
+        String memberIdStr = memberId.toString();
+        if (memberIdStr.length() <= 4) {
+            sb.append(String.format("%04d", memberId));
+        } else {
+            sb.append(memberIdStr.substring(memberIdStr.length() - 4));
+        }
+        return sb.toString();
+    }
+
     /**
      * 计算指定商品的总价
      *
@@ -109,7 +196,6 @@ public class UmsMemberCouponServiceImpl implements UmsMemberCouponService {
             if (productIds.contains(item.getProductId())) {
                 BigDecimal realPrice = item.getPrice().subtract(item.getReduceAmount());
                 total = total.add(realPrice.multiply(new BigDecimal(item.getQuantity())));
-
             }
         }
         return total;

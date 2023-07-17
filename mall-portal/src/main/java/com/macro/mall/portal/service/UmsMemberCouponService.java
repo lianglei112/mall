@@ -1,5 +1,6 @@
 package com.macro.mall.portal.service;
 
+import com.macro.mall.model.SmsCouponHistory;
 import com.macro.mall.portal.domain.CartPromotionItem;
 import com.macro.mall.portal.domain.SmsCouponHistoryDetail;
 
@@ -13,7 +14,10 @@ import java.util.List;
  */
 public interface UmsMemberCouponService {
 
-
     List<SmsCouponHistoryDetail> listCart(List<CartPromotionItem> cartPromotionItemList, Integer type);
+
+    void add(Long couponId);
+
+    List<SmsCouponHistory> listHistory(Integer useStatus);
 
 }

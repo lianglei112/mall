@@ -1,8 +1,8 @@
 package com.macro.mall.portal.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import com.macro.mall.common.exception.Asserts;
-import com.macro.mall.mapper.SmsCouponHistoryMapper;
-import com.macro.mall.mapper.SmsCouponMapper;
+import com.macro.mall.mapper.*;
 import com.macro.mall.model.*;
 import com.macro.mall.portal.dao.SmsCouponHistoryDao;
 import com.macro.mall.portal.domain.CartPromotionItem;
@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * @author lianglei
@@ -47,6 +48,15 @@ public class UmsMemberCouponServiceImpl implements UmsMemberCouponService {
 
     @Autowired
     private SmsCouponHistoryMapper smsCouponHistoryMapper;
+
+    @Autowired
+    private SmsCouponProductRelationMapper smsCouponProductRelationMapper;
+
+    @Autowired
+    private PmsProductMapper pmsProductMapper;
+
+    @Autowired
+    private SmsCouponProductCategoryRelationMapper smsCouponProductCategoryRelationMapper;
 
     @Override
     public List<SmsCouponHistoryDetail> listCart(List<CartPromotionItem> cartPromotionItemList, Integer type) {
@@ -158,6 +168,47 @@ public class UmsMemberCouponServiceImpl implements UmsMemberCouponService {
             criteria.andUseStatusEqualTo(useStatus);
         }
         return smsCouponHistoryMapper.selectByExample(example);
+    }
+
+    @Override
+    public List<SmsCoupon> list(Integer useStatus) {
+        UmsMember currentMember = umsMemberService.getCurrentMember();
+        return smsCouponHistoryDao.getCouponList(currentMember.getId(), useStatus);
+    }
+
+    @Override
+    public List<SmsCoupon> listByProduct(Long productId) {
+        List<Long> allCouponIds = new ArrayList<>();
+        //获取指定商品优惠券
+        SmsCouponProductRelationExample cprExample = new SmsCouponProductRelationExample();
+        cprExample.createCriteria().andProductIdEqualTo(productId);
+        List<SmsCouponProductRelation> cprList = smsCouponProductRelationMapper.selectByExample(cprExample);
+        if (CollUtil.isNotEmpty(cprList)) {
+            List<Long> couponIds = cprList.stream().map(SmsCouponProductRelation::getCouponId).collect(Collectors.toList());
+            allCouponIds.addAll(couponIds);
+        }
+        //获取指定分类优惠券
+        PmsProduct product = pmsProductMapper.selectByPrimaryKey(productId);
+        SmsCouponProductCategoryRelationExample cpcrExample = new SmsCouponProductCategoryRelationExample();
+        cpcrExample.createCriteria().andProductCategoryIdEqualTo(product.getProductCategoryId());
+        List<SmsCouponProductCategoryRelation> cpcrList = smsCouponProductCategoryRelationMapper.selectByExample(cpcrExample);
+        if (CollUtil.isNotEmpty(cpcrList)) {
+            List<Long> couponIds = cpcrList.stream().map(SmsCouponProductCategoryRelation::getCouponId).collect(Collectors.toList());
+            allCouponIds.addAll(couponIds);
+        }
+        //查询所有优惠劵
+        SmsCouponExample couponExample = new SmsCouponExample();
+        couponExample.createCriteria().andEndTimeGreaterThan(new Date())
+                .andStartTimeLessThan(new Date())
+                .andUseTypeEqualTo(0);
+        if (CollUtil.isNotEmpty(allCouponIds)) {
+            couponExample.or(couponExample.createCriteria()
+                    .andEndTimeGreaterThan(new Date())
+                    .andStartTimeEqualTo(new Date())
+                    .andUseTypeNotEqualTo(0)
+                    .andIdIn(allCouponIds));
+        }
+        return smsCouponMapper.selectByExample(couponExample);
     }
 
     /**

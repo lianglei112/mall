@@ -250,55 +250,105 @@
         <!--        </table>-->
 
         <!--  营销模块相关表结构生成  -->
-        <table tableName="sms_coupon">
+        <!--        <table tableName="sms_coupon">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="sms_coupon_history">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="sms_coupon_product_category_relation">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="sms_coupon_product_relation">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="sms_flash_promotion">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="sms_flash_promotion_log">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="sms_flash_promotion_product_relation">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="sms_flash_promotion_session">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="sms_home_advertise">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="sms_home_brand">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="sms_home_new_product">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="sms_home_recommend_product">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="sms_home_recommend_subject">-->
+        <!--            &lt;!&ndash; 用来指定主键生成策略 &ndash;&gt;-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+
+        <!-- 专题相关  -->
+        <table tableName="cms_help">
             <!-- 用来指定主键生成策略 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="sms_coupon_history">
+        <table tableName="cms_help_category">
             <!-- 用来指定主键生成策略 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="sms_coupon_product_category_relation">
+        <table tableName="cms_member_report">
             <!-- 用来指定主键生成策略 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="sms_coupon_product_relation">
+        <table tableName="cms_prefrence_area">
             <!-- 用来指定主键生成策略 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="sms_flash_promotion">
+        <table tableName="cms_prefrence_area_product_relation">
             <!-- 用来指定主键生成策略 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="sms_flash_promotion_log">
+        <table tableName="cms_subject">
             <!-- 用来指定主键生成策略 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="sms_flash_promotion_product_relation">
+        <table tableName="cms_subject_category">
             <!-- 用来指定主键生成策略 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="sms_flash_promotion_session">
+        <table tableName="cms_subject_comment">
             <!-- 用来指定主键生成策略 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="sms_home_advertise">
+        <table tableName="cms_subject_product_relation">
             <!-- 用来指定主键生成策略 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="sms_home_brand">
+        <table tableName="cms_topic">
             <!-- 用来指定主键生成策略 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="sms_home_new_product">
+        <table tableName="cms_topic_category">
             <!-- 用来指定主键生成策略 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="sms_home_recommend_product">
-            <!-- 用来指定主键生成策略 -->
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="sms_home_recommend_subject">
+        <table tableName="cms_topic_comment">
             <!-- 用来指定主键生成策略 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
